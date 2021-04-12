@@ -857,6 +857,9 @@ class Tracker():
         euler = cv2.RQDecomp3x3(rmat)[0]
         return True, matrix_to_quaternion(rmat), euler, pnp_error, pts_3d, lms
 
+    ##################################
+    ####### koko
+    ###################################
     def preprocess(self, im, crop):
         x1, y1, x2, y2 = crop
         im = np.float32(im[y1:y2, x1:x2,::-1]) # Crop and BGR to RGB
@@ -1096,7 +1099,7 @@ class Tracker():
                 continue
 
             start_pp = time.perf_counter()
-            crop = self.preprocess(im, (crop_x1, crop_y1, crop_x2, crop_y2))
+            crop = self.preprocess(im, (crop_x1, crop_y1, crop_x2, crop_y2)) ################################koko
             duration_pp += 1000 * (time.perf_counter() - start_pp)
             crops.append(crop)
             crop_info.append((crop_x1, crop_y1, scale_x, scale_y, 0.0 if j >= bonus_cutoff else 0.1))
@@ -1105,8 +1108,8 @@ class Tracker():
         start_model = time.perf_counter()
         outputs = {}
         if num_crops == 1:
-            output = self.session.run([], {self.input_name: crops[0]})[0]
-            conf, lms = self.landmarks(output[0], crop_info[0])
+            output = self.session.run([], {self.input_name: crops[0]})[0] ################################koko
+            conf, lms = self.landmarks(output[0], crop_info[0]) ################################koko
             if conf > self.threshold:
                 try:
                     eye_state = self.get_eye_state(frame, lms)
